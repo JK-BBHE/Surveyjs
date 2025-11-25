@@ -43,10 +43,10 @@
 
     <script>
       // survey.json aus dem gleichen Repository laden
-      fetch("survey.json")
+      fetch("survey.js")
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Konnte survey.json nicht laden: " + response.status);
+            throw new Error("Konnte survey.js nicht laden: " + response.status);
           }
           return response.json();
         })
