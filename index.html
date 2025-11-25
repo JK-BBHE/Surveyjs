@@ -2,7 +2,7 @@
 <html lang="de">
   <head>
     <meta charset="utf-8" />
-    <title>BBH Engineering – Nahwärme-Umfrage</title>
+    <title>25XXX – Projektname – Erfassungsbogen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- SurveyJS CSS & JS über CDN -->
@@ -13,9 +13,6 @@
     />
     <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
     <script src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
-
-    <!-- Deine Survey-Definition -->
-    <script src="survey.json"></script>
 
     <style>
       body {
@@ -45,19 +42,32 @@
     <div id="surveyContainer"></div>
 
     <script>
-      // surveyJson kommt aus survey.js
-      const survey = new Survey.Model(surveyJson);
+      // survey.json aus dem gleichen Repository laden
+      fetch("survey.json")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Konnte survey.json nicht laden: " + response.status);
+          }
+          return response.json();
+        })
+        .then((surveyJson) => {
+          // Survey aus dem JSON erzeugen
+          const survey = new Survey.Model(surveyJson);
 
-      // Was beim Abschluss passieren soll
-      survey.onComplete.add(function (sender) {
-        console.log("Survey results:", sender.data);
-        alert("Vielen Dank für Ihre Teilnahme!");
-        // Später kannst du hier z.B. einen POST an deinen Server machen
-      });
+          // Was beim Abschluss passieren soll
+          survey.onComplete.add(function (sender) {
+            console.log("Survey results:", sender.data);
+            alert("Vielen Dank für Ihre Teilnahme!");
+          });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        survey.render(document.getElementById("surveyContainer"));
-      });
+          // In das DIV rendern
+          survey.render(document.getElementById("surveyContainer"));
+        })
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("surveyContainer").innerText =
+            "Die Umfrage konnte nicht geladen werden.";
+        });
     </script>
   </body>
 </html>
