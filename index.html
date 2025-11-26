@@ -67,48 +67,79 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        if (typeof surveyJson === "undefined") {
-          document.getElementById("surveyContainer").innerText =
-            "surveyJson ist nicht definiert. Bitte survey.js prüfen.";
-          return;
-        }
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof surveyJson === "undefined") {
+        document.getElementById("surveyContainer").innerText =
+          "surveyJson ist nicht definiert. Bitte survey.js prüfen.";
+        return;
+      }
 
-        const survey = new Survey.Model(surveyJson);
+      const survey = new Survey.Model(surveyJson);
+      survey.locale = "de";
 
-        // 🔤 SurveyJS-UI auf Deutsch (Buttons, Fehlermeldungen, etc.)
-        survey.locale = "de";
+      const resultTextarea = document.getElementById("resultJson");
+      const downloadBtn = document.getElementById("downloadBtn");
 
-        const resultTextarea = document.getElementById("resultJson");
-        const downloadBtn = document.getElementById("downloadBtn");
+      // 👉 HIER deine Supabase-Daten einsetzen
+      const SUPABASE_URL = "https://jhqabvasnhbvemmhijob.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpocWFidmFzbmhidmVtbWhpam9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMDE5MzgsImV4cCI6MjA3OTY3NzkzOH0.mWFLJJQA63PoAi3nBaBIFUBiXmbpv03iRQSqrahWwMw";
+      const SUPABASE_TABLE = "survey_responses";
 
-        // ✅ Was beim Abschluss passieren soll
-        survey.onComplete.add(function (sender) {
-          const data = sender.data; // Antworten als JS-Objekt
-          const jsonStr = JSON.stringify(data, null, 2); // hübsch formatiert
+      survey.onComplete.add(function (sender) {
+        const data = sender.data; // Antworten als JS-Objekt
+        const jsonStr = JSON.stringify(data, null, 2);
 
-          alert("Vielen Dank für Ihre Teilnahme!"); // deutsche Meldung
+        // Payload für Supabase
+        const payload = {
+          data: data
+          // du kannst hier weitere Felder ergänzen, z.B.:
+          // user_agent: navigator.userAgent
+          // project_code: "25XXX"
+        };
 
-          // JSON im Textfeld anzeigen, damit du es kopieren kannst
-          resultTextarea.value = jsonStr;
-          resultTextarea.style.display = "block";
-          downloadBtn.style.display = "inline-block";
+        // REST-Endpoint für die Tabelle
+        const url = `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`;
 
-          // Button zum Herunterladen einer JSON-Datei
-          downloadBtn.onclick = function () {
-            const blob = new Blob([jsonStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "survey-result.json";
-            a.click();
-            URL.revokeObjectURL(url);
-          };
-        });
+        // Daten an Supabase senden
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: "Bearer " + SUPABASE_ANON_KEY,
+            Prefer: "return=minimal" // wir brauchen keine Antwort
+          },
+          body: JSON.stringify(payload)
+        })
+          .then(() => {
+            // hier könnte man optional eine Erfolgsmeldung loggen
+            console.log("Antwort in Supabase gespeichert");
+          })
+          .catch((err) => {
+            console.error("Fehler beim Speichern in Supabase:", err);
+          });
 
-        // Survey rendern
-        survey.render(document.getElementById("surveyContainer"));
+        alert("Vielen Dank für Ihre Teilnahme!");
+
+        // JSON im Textfeld anzeigen
+        resultTextarea.value = jsonStr;
+        resultTextarea.style.display = "block";
+        downloadBtn.style.display = "inline-block";
+
+        // Button zum Herunterladen einer JSON-Datei
+        downloadBtn.onclick = function () {
+          const blob = new Blob([jsonStr], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "survey-result.json";
+          a.click();
+          URL.revokeObjectURL(url);
+        };
       });
-    </script>
+
+      survey.render(document.getElementById("surveyContainer"));
+    });
+  </script>
   </body>
 </html>
