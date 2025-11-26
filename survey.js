@@ -52,19 +52,19 @@ const surveyJson = {
             },
             {
               "type": "text",
-              "name": "adresse",
+              "name": "strasse",
               "title": "Adresse (Straße)",
               "isRequired": true
             },
             {
               "type": "text",
-              "name": "question2",
+              "name": "hausnummer",
               "title": " Adresse (Hausnummer)",
               "isRequired": true
             },
             {
               "type": "text",
-              "name": "question1",
+              "name": "plz",
               "title": "Adresse (PLZ)",
               "isRequired": true,
               "inputType": "number",
@@ -73,7 +73,7 @@ const surveyJson = {
             },
             {
               "type": "text",
-              "name": "question3",
+              "name": "ort",
               "title": "Adresse (Ort)",
               "isRequired": true
             }
@@ -86,7 +86,7 @@ const surveyJson = {
           "elements": [
             {
               "type": "radiogroup",
-              "name": "anschluss_bereitschaft",
+              "name": "anschlussbereitschaft",
               "title": "Für den Fall, dass das Projekt umgesetzt wird und sich ein für Sie attraktiver Wärmepreis realisieren lässt: Würden Sie sich an das Nahwärmenetz der Zentralheizung anschließen?",
               "isRequired": true,
               "choices": [
@@ -103,7 +103,7 @@ const surveyJson = {
             {
               "type": "comment",
               "name": "anschluss_nein_begruendung",
-              "visibleIf": "{anschluss_bereitschaft} = 'nein'",
+              "visibleIf": "{anschlussbereitschaft} = 'nein'",
               "title": "Wenn „Nein“, warum nicht:"
             }
           ]
@@ -147,7 +147,7 @@ const surveyJson = {
         {
           "type": "radiogroup",
           "name": "efh_baujahrklasse",
-          "title": "9. Angaben zum Gebäudetyp:",
+          "title": "Angaben zum Gebäudetyp:",
           "choices": [
             "Einfamilienhaus (bis 1918)",
             "Einfamilienhaus (1919–1948)",
@@ -168,13 +168,7 @@ const surveyJson = {
         },
         {
           "type": "text",
-          "name": "efh_personen",
-          "title": "10. Wie viele Personen wohnen im Haus? [Anzahl] (für die Abschätzung des Trinkwarmwasserbedarfs)",
-          "inputType": "number"
-        },
-        {
-          "type": "text",
-          "name": "question4",
+          "name": "efh_m2",
           "title": "Gesamte zu beheizende Fläche des Gebäudes [m²]",
           "isRequired": true,
           "inputType": "number",
@@ -182,15 +176,21 @@ const surveyJson = {
           "max": 15000
         },
         {
+          "type": "text",
+          "name": "efh_personen",
+          "title": "Wie viele Personen wohnen im Haus? [Anzahl] (für die Abschätzung des Trinkwarmwasserbedarfs)",
+          "inputType": "number"
+        },
+        {
           "type": "boolean",
-          "name": "SM -EFH",
-          "title": "11. Wurden schon oder sind Sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?"
+          "name": "efh_sm",
+          "title": "Wurden schon oder sind Sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?"
         },
         {
           "type": "matrixdynamic",
           "name": "efh_sanierung",
           "visible": false,
-          "visibleIf": "{SM -EFH} = true",
+          "visibleIf": "{efh_sm} = true",
           "title": "Welche sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?",
           "columns": [
             {
@@ -239,7 +239,7 @@ const surveyJson = {
         {
           "type": "radiogroup",
           "name": "mfh_baujahrklasse",
-          "title": "13. Angaben zum Gebäudetyp:",
+          "title": "Angaben zum Gebäudetyp:",
           "isRequired": true,
           "choices": [
             "Mehrfamilienhaus (bis 1918)",
@@ -261,7 +261,7 @@ const surveyJson = {
         },
         {
           "type": "text",
-          "name": "question7",
+          "name": "mfh_m2",
           "title": "Gesamte zu beheizende Fläche des Gebäudes [m²]",
           "isRequired": true,
           "inputType": "number",
@@ -270,26 +270,26 @@ const surveyJson = {
         },
         {
           "type": "text",
-          "name": "ap_wohneinheiten",
-          "title": "19. Bitte geben Sie die Anzahl der Wohneinheiten an [Anzahl WE]",
+          "name": "mfh_WE",
+          "title": "Bitte geben Sie die Anzahl der Wohneinheiten an [Anzahl WE]",
           "inputType": "number"
         },
         {
           "type": "text",
           "name": "mfh_personen",
-          "title": "15. Wie viele Personen wohnen im Haus? [Anzahl] (für die Abschätzung des Trinkwarmwasserbedarfs)",
+          "title": " Wie viele Personen wohnen im Haus? [Anzahl] (für die Abschätzung des Trinkwarmwasserbedarfs)",
           "inputType": "number"
         },
         {
           "type": "boolean",
-          "name": "SM-MFH",
-          "title": "11. Wurden schon oder sind Sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?"
+          "name": "mfh_sm",
+          "title": "Wurden schon oder sind Sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?"
         },
         {
           "type": "matrixdynamic",
-          "name": "MFH_sanierung",
+          "name": "mfh_sanierung",
           "visible": false,
-          "visibleIf": "{SM-MFH} = true",
+          "visibleIf": "{mfh_sm} = true",
           "title": "Welche sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?",
           "columns": [
             {
@@ -338,7 +338,7 @@ const surveyJson = {
         {
           "type": "radiogroup",
           "name": "ap_baujahrklasse",
-          "title": "18. Angaben zum Gebäudetyp:",
+          "title": "Angaben zum Gebäudetyp:",
           "isRequired": true,
           "choices": [
             "Apartmentblock (bis 1918)",
@@ -360,7 +360,7 @@ const surveyJson = {
         },
         {
           "type": "text",
-          "name": "question9",
+          "name": "ap_m2",
           "title": "Gesamte zu beheizende Fläche des Gebäudes [m²]",
           "isRequired": true,
           "inputType": "number",
@@ -369,26 +369,26 @@ const surveyJson = {
         },
         {
           "type": "text",
-          "name": "question10",
+          "name": "ap_WE",
           "title": "Bitte geben Sie die Anzahl der Wohneinheiten an [Anzahl WE]",
           "inputType": "number"
         },
         {
           "type": "text",
           "name": "ap_personen",
-          "title": "20. Wie viele Personen wohnen im Haus? [Anzahl] (für die Abschätzung des Trinkwarmwasserbedarfs)",
+          "title": "Wie viele Personen wohnen im Haus? [Anzahl] (für die Abschätzung des Trinkwarmwasserbedarfs)",
           "inputType": "number"
         },
         {
           "type": "boolean",
-          "name": "SM-AP",
-          "title": "11. Wurden schon oder sind Sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?"
+          "name": "ap_sm",
+          "title": "Wurden schon oder sind Sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?"
         },
         {
           "type": "matrixdynamic",
-          "name": "AP_sanierung",
+          "name": "ap_sanierung",
           "visible": false,
-          "visibleIf": "{SM-AP} = true",
+          "visibleIf": "{ap_sm} = true",
           "title": "Welche sanierungsmaßnahmen am Gebäude durchgeführt oder geplant?",
           "columns": [
             {
@@ -437,7 +437,7 @@ const surveyJson = {
         {
           "type": "radiogroup",
           "name": "nw_gebaeudetyp",
-          "title": "23. Angaben zum Nicht-Wohngebäudetyp:",
+          "title": "Angaben zum Nicht-Wohngebäudetyp:",
           "isRequired": true,
           "choices": [
             "Alten-/Pflegeheim",
@@ -458,7 +458,7 @@ const surveyJson = {
         },
         {
           "type": "text",
-          "name": "question11",
+          "name": "nw_m2",
           "title": "Gesamte zu beheizende Fläche des Gebäudes [m²]",
           "isRequired": true,
           "inputType": "number",
@@ -468,7 +468,7 @@ const surveyJson = {
         {
           "type": "radiogroup",
           "name": "nw_trinkwarmwasser",
-          "title": "24. Wird in dem Nicht-Wohngebäude Trinkwarmwasser bereitgestellt?",
+          "title": "Wird in dem Nicht-Wohngebäude Trinkwarmwasser bereitgestellt?",
           "choices": [
             "Ja, über die Heizung",
             "Ja, über eine separate TWWB",
@@ -484,50 +484,9 @@ const surveyJson = {
       "elements": [
         {
           "type": "checkbox",
-          "name": "heizungssysteme",
-          "visible": false,
-          "title": "25. Ihr derzeitiges Heizungssystem (Mehrfachauswahl möglich). Falls Sie ein nicht aufgeführtes System installiert haben, geben Sie dies bitte unter Sonstiges an.",
-          "isRequired": true,
-          "choices": [
-            "Heizöl Zentralheizung",
-            "Erdgas Zentralheizung",
-            "Flüssiggas Zentralheizung",
-            "Holz Zentralheizung",
-            "Stromnachtspeicher",
-            "Wärmepumpe",
-            "Kamin als Ergänzung",
-            "Sonstiges"
-          ]
-        },
-        {
-          "type": "text",
-          "name": "heizung_baujahr",
-          "visible": false,
-          "title": "26. Baujahr der Heizungsanlage [Jahr]",
-          "inputType": "number"
-        },
-        {
-          "type": "text",
-          "name": "heizung_leistung",
-          "visible": false,
-          "title": "27. Nennheizleistung der Heizungsanlage [kW]",
-          "inputType": "number"
-        },
-        {
-          "type": "radiogroup",
-          "name": "holzofen_kamin",
-          "visible": false,
-          "title": "28. Ist ein Holzofen / Kamin vorhanden? (ggf. mit direkter Verbindung in das Heizsystem)",
-          "choices": [
-            "Ja, ohne Verbindung zum Heizsystem",
-            "Ja, mit Verbindung zum Heizsystem",
-            "Nein"
-          ]
-        },
-        {
-          "type": "checkbox",
-          "name": "heatingSystems",
+          "name": "heizung_typ",
           "title": "Ihr derzeitiges Heizungssystem (Mehrfachauswahl möglich).",
+          "isRequired": true,
           "choices": [
             {
               "value": "oil",
@@ -565,8 +524,8 @@ const surveyJson = {
         },
         {
           "type": "matrixdropdown",
-          "name": "heatingTechDetails",
-          "visibleIf": "{heatingSystems.length} > 0",
+          "name": "heizung_bj_hl",
+          "visibleIf": "{heizung_typ.length} > 0",
           "title": "Bitte geben Sie Baujahr und Heizlast für die ausgewählten Systeme an.",
           "isRequired": true,
           "columns": [
@@ -591,49 +550,49 @@ const surveyJson = {
             {
               "value": "oil",
               "text": "Heizöl Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'oil'"
+              "visibleIf": "{heizung_typ} contains 'oil'"
             },
             {
               "value": "gas",
               "text": "Erdgas Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'gas'"
+              "visibleIf": "{heizung_typ} contains 'gas'"
             },
             {
               "value": "lpg",
               "text": "Flüssiggas Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'lpg'"
+              "visibleIf": "{heizung_typ} contains 'lpg'"
             },
             {
               "value": "wood",
               "text": "Holz Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'wood'"
+              "visibleIf": "{heizung_typ} contains 'wood'"
             },
             {
               "value": "night",
               "text": "Stromnachtspeicher",
-              "visibleIf": "{heatingSystems} contains 'night'"
+              "visibleIf": "{heizung_typ} contains 'night'"
             },
             {
               "value": "hp",
               "text": "Wärmepumpe",
-              "visibleIf": "{heatingSystems} contains 'hp'"
+              "visibleIf": "{heizung_typ} contains 'hp'"
             },
             {
               "value": "fireplace",
               "text": "Kamin als Ergänzung",
-              "visibleIf": "{heatingSystems} contains 'fireplace'"
+              "visibleIf": "{heizung_typ} contains 'fireplace'"
             },
             {
               "value": "other",
               "text": "Sonstiges",
-              "visibleIf": "{heatingSystems} contains 'other'"
+              "visibleIf": "{heizung_typ} contains 'other'"
             }
           ]
         },
         {
           "type": "matrixdropdown",
-          "name": "heatingConsumption",
-          "visibleIf": "{heatingSystems.length} > 0",
+          "name": "heizung_verbrauch",
+          "visibleIf": "{heizung_typ.length} > 0",
           "title": "Bitte geben Sie den Energieverbrauch der letzten 3 Jahre an.",
           "defaultValue": {
             "oil": {
@@ -729,98 +688,53 @@ const surveyJson = {
             {
               "value": "oil",
               "text": "Heizöl Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'oil'"
+              "visibleIf": "{heizung_typ} contains 'oil'"
             },
             {
               "value": "gas",
               "text": "Erdgas Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'gas'"
+              "visibleIf": "{heizung_typ} contains 'gas'"
             },
             {
               "value": "lpg",
               "text": "Flüssiggas Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'lpg'"
+              "visibleIf": "{heizung_typ} contains 'lpg'"
             },
             {
               "value": "wood",
               "text": "Holz Zentralheizung",
-              "visibleIf": "{heatingSystems} contains 'wood'"
+              "visibleIf": "{heizung_typ} contains 'wood'"
             },
             {
               "value": "night",
               "text": "Stromnachtspeicher",
-              "visibleIf": "{heatingSystems} contains 'night'"
+              "visibleIf": "{heizung_typ} contains 'night'"
             },
             {
               "value": "hp",
               "text": "Wärmepumpe",
-              "visibleIf": "{heatingSystems} contains 'hp'"
+              "visibleIf": "{heizung_typ} contains 'hp'"
             },
             {
               "value": "fireplace",
               "text": "Kamin als Ergänzung",
-              "visibleIf": "{heatingSystems} contains 'fireplace'"
+              "visibleIf": "{heizung_typ} contains 'fireplace'"
             },
             {
               "value": "other",
               "text": "Sonstiges",
-              "visibleIf": "{heatingSystems} contains 'other'"
+              "visibleIf": "{heizung_typ} contains 'other'"
             }
           ]
         },
         {
           "type": "radiogroup",
-          "name": "solaranlage",
-          "title": "29. Ist eine Solaranlage zur Heizungsunterstützung oder Warmwassererzeugung vorhanden?",
+          "name": "frage_solaranlage",
+          "title": "Ist eine Solaranlage zur Heizungsunterstützung oder Warmwassererzeugung vorhanden?",
           "choices": [
             "Ja",
             "Nein"
           ]
-        }
-      ]
-    },
-    {
-      "name": "brennstoff_verbrauch",
-      "visible": false,
-      "elements": [
-        {
-          "type": "checkbox",
-          "name": "brennstoffe",
-          "visible": false,
-          "title": "30. Ihr aktueller und vergangener Brennstoffverbrauch (hier nur angeben, was durch die Nahwärme ersetzt wird). Welche Brennstoffe nutzen Sie?",
-          "choices": [
-            "Heizöl [l/Jahr]",
-            "Erdgas [m³/Jahr]",
-            "Flüssiggas [l/Jahr]",
-            "Strom [kWh/Jahr]",
-            "Scheitholz [Raummeter/Jahr]",
-            "Holz-Pellets [t/Jahr]",
-            "Hackschnitzel [Srm/Jahr]"
-          ]
-        },
-        {
-          "type": "comment",
-          "name": "verbrauch_2024",
-          "visible": false,
-          "title": "31. Angabe des Verbrauchs – Jahr 2024\n\nHinweis: Bitte die in „30“ angekreuzte Brennstoff-Einheit berücksichtigen. Sollten keine Daten zum Brennstoffverbrauch vorliegen, können Sie auch die Wärmemenge in kWh angeben."
-        },
-        {
-          "type": "comment",
-          "name": "verbrauch_2023",
-          "visible": false,
-          "title": "32. Angabe des Verbrauchs – Jahr 2023\n\nHinweis: Bitte die in „30“ angekreuzte Brennstoff-Einheit berücksichtigen. Sollten keine Daten zum Brennstoffverbrauch vorliegen, können Sie auch die Wärmemenge in kWh angeben."
-        },
-        {
-          "type": "comment",
-          "name": "verbrauch_2022",
-          "visible": false,
-          "title": "33. Angabe des Verbrauchs – Jahr 2022\n\nHinweis: Bitte die in „30“ angekreuzte Brennstoff-Einheit berücksichtigen. Sollten keine Daten zum Brennstoffverbrauch vorliegen, können Sie auch die Wärmemenge in kWh angeben."
-        },
-        {
-          "type": "comment",
-          "name": "verbrauch_ergaenzende_systeme",
-          "visible": false,
-          "title": "34. Falls ein ergänzendes System vorliegt (Kamin, Solaranlage) – Angabe des dort eingesetzten Brennstoffs und Verbrauchs."
         }
       ]
     },
@@ -830,7 +744,7 @@ const surveyJson = {
         {
           "type": "comment",
           "name": "hinweise_bemerkungen",
-          "title": "35. Hinweise / Bemerkungen"
+          "title": "Hinweise / Bemerkungen"
         }
       ]
     }
@@ -838,7 +752,7 @@ const surveyJson = {
   "triggers": [
     {
       "type": "complete",
-      "expression": "{anschluss_bereitschaft} <> 'ja'"
+      "expression": "{anschlussbereitschaft} <> 'ja'"
     },
     {
       "type": "complete",
