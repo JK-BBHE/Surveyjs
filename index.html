@@ -5,14 +5,18 @@
     <title>25XXX – Projektname – Erfassungsbogen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- SurveyJS CSS & JS über CDN -->
+    <!-- SurveyJS CSS & JS -->
     <link
       href="https://unpkg.com/survey-core/survey-core.min.css"
       rel="stylesheet"
       type="text/css"
     />
     <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
+    <script src="https://unpkg.com/survey-core/survey.i18n.min.js"></script>
     <script src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
+
+    <!-- Dein Survey-JSON als JS -->
+    <script src="survey.js"></script>
 
     <style>
       body {
@@ -33,6 +37,21 @@
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       }
+      #resultsBox {
+        max-width: 900px;
+        margin: 2rem auto 0;
+      }
+      #resultJson {
+        width: 100%;
+        min-height: 200px;
+        font-family: monospace;
+        font-size: 0.9rem;
+        display: none;
+      }
+      #downloadBtn {
+        display: none;
+        margin-top: 0.5rem;
+      }
     </style>
   </head>
 
@@ -41,33 +60,55 @@
 
     <div id="surveyContainer"></div>
 
+    <div id="resultsBox">
+      <p>Export als JSON (für eine ausgefüllte Umfrage):</p>
+      <textarea id="resultJson" readonly></textarea><br />
+      <button id="downloadBtn">Antworten als JSON herunterladen</button>
+    </div>
+
     <script>
-      // survey.json aus dem gleichen Repository laden
-      fetch("survey.js")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Konnte survey.js nicht laden: " + response.status);
-          }
-          return response.json();
-        })
-        .then((surveyJson) => {
-          // Survey aus dem JSON erzeugen
-          const survey = new Survey.Model(surveyJson);
-
-          // Was beim Abschluss passieren soll
-          survey.onComplete.add(function (sender) {
-            console.log("Survey results:", sender.data);
-            alert("Vielen Dank für Ihre Teilnahme!");
-          });
-
-          // In das DIV rendern
-          survey.render(document.getElementById("surveyContainer"));
-        })
-        .catch((err) => {
-          console.error(err);
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof surveyJson === "undefined") {
           document.getElementById("surveyContainer").innerText =
-            "Die Umfrage konnte nicht geladen werden.";
+            "surveyJson ist nicht definiert. Bitte survey.js prüfen.";
+          return;
+        }
+
+        const survey = new Survey.Model(surveyJson);
+
+        // 🔤 SurveyJS-UI auf Deutsch (Buttons, Fehlermeldungen, etc.)
+        survey.locale = "de";
+
+        const resultTextarea = document.getElementById("resultJson");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        // ✅ Was beim Abschluss passieren soll
+        survey.onComplete.add(function (sender) {
+          const data = sender.data; // Antworten als JS-Objekt
+          const jsonStr = JSON.stringify(data, null, 2); // hübsch formatiert
+
+          alert("Vielen Dank für Ihre Teilnahme!"); // deutsche Meldung
+
+          // JSON im Textfeld anzeigen, damit du es kopieren kannst
+          resultTextarea.value = jsonStr;
+          resultTextarea.style.display = "block";
+          downloadBtn.style.display = "inline-block";
+
+          // Button zum Herunterladen einer JSON-Datei
+          downloadBtn.onclick = function () {
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "survey-result.json";
+            a.click();
+            URL.revokeObjectURL(url);
+          };
         });
+
+        // Survey rendern
+        survey.render(document.getElementById("surveyContainer"));
+      });
     </script>
   </body>
 </html>
