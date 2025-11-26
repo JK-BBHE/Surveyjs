@@ -676,7 +676,7 @@ const surveyJson = {
                   "text": "Srm"
                 }
               ],
-              "choicesVisibleIf": "(({row.fuel} = 'oil' and ({item} = 'l' or {item} = 'm3' or {item} = 'kwh')) or ({row.fuel} = 'gas' and ({item} = 'm3' or {item} = 'kwh')) or ({row.fuel} = 'lpg' and ({item} = 'm3' or {item} = 'kwh')) or ({row.fuel} = 'night' and {item} = 'kwh') or ({row.fuel} = 'wood' and ({item} = 'rm' or {item} = 'kwh')) or ({row.fuel} = 'pellets' and ({item} = 'tonne' or {item} = 'kwh')) or ({row.fuel} = 'chips' and ({item} = 'srm' or {item} = 'kwh')))"
+              "choicesVisibleIf": "(({row.fuel} = 'oil' and ({item} = 'l' or {item} = 'm3' or {item} = 'kwh')) or ({row.fuel} = 'gas' and ({item} = 'm3' or {item} = 'kwh')) or ({row.fuel} = 'lpg' and ({item} = 'm3' or {item} = 'kwh')) or ({row.fuel} = 'night' and {item} = 'kwh') or ({row.fuel} = 'hp' and {item} = 'kwh')or ({row.fuel} = 'wood' and ({item} = 'rm' or {item} = 'kwh')) or ({row.fuel} = 'pellets' and ({item} = 'tonne' or {item} = 'kwh')) or ({row.fuel} = 'chips' and ({item} = 'srm' or {item} = 'kwh')))"
             },
             {
               "name": "fuel",
